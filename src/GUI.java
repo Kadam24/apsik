@@ -8,6 +8,7 @@ import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
+import javax.swing.JSlider;
 import javax.swing.Timer;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
@@ -21,13 +22,14 @@ public class GUI extends JPanel implements ActionListener, ChangeListener {
 	private Board board;
 	private JButton start;
 	private JButton clear;
+	private JSlider pred;
 	private JFrame frame;
 	private int iterNum = 0;
 	private final int maxDelay = 500;
-	private final int initDelay = 5;
+	private final int initDelay = 100;
 	private boolean running = false;
 
-	public GUI(Program jf) {
+	public GUI(JFrame jf) {
 		frame = jf;
 		timer = new Timer(initDelay, this);
 		timer.stop();
@@ -38,7 +40,7 @@ public class GUI extends JPanel implements ActionListener, ChangeListener {
 	 */
 	public void initialize(Container container) {
 		container.setLayout(new BorderLayout());
-		container.setSize(new Dimension(1000, 700));
+		container.setSize(new Dimension(1024, 768));
 
 		JPanel buttonPanel = new JPanel();
 
@@ -50,16 +52,20 @@ public class GUI extends JPanel implements ActionListener, ChangeListener {
 		clear.setActionCommand("clear");
 		clear.addActionListener(this);
 
-		//pred.setMinimum(0);
-		//pred.setMaximum(maxDelay);
-		//pred.addChangeListener(this);
-		//pred.setValue(maxDelay - timer.getDelay());
+		//figures = new JComboBox(Pattern.setPattern());
+		//figures.setToolTipText("Pattern choice");
+
+		pred = new JSlider();
+		pred.setMinimum(0);
+		pred.setMaximum(maxDelay);
+		pred.addChangeListener(this);
+		pred.setValue(maxDelay - timer.getDelay());
 
 		buttonPanel.add(start);
 		buttonPanel.add(clear);
-		//buttonPanel.add(pred);
+		buttonPanel.add(pred);
 
-		board = new Board(1000, 700 - buttonPanel.getHeight());
+		board = new Board(1024, 768 - buttonPanel.getHeight());
 		container.add(board, BorderLayout.CENTER);
 		container.add(buttonPanel, BorderLayout.SOUTH);
 	}
@@ -71,7 +77,7 @@ public class GUI extends JPanel implements ActionListener, ChangeListener {
 	public void actionPerformed(ActionEvent e) {
 		if (e.getSource().equals(timer)) {
 			iterNum++;
-			frame.setTitle(" (" + Integer.toString(iterNum) + " iteration)");
+			frame.setTitle("Game of Life (" + Integer.toString(iterNum) + " iteration)");
 			board.iteration();
 		} else {
 			String command = e.getActionCommand();
@@ -103,6 +109,6 @@ public class GUI extends JPanel implements ActionListener, ChangeListener {
 	 * @see javax.swing.event.ChangeListener#stateChanged(javax.swing.event.ChangeEvent)
 	 */
 	public void stateChanged(ChangeEvent e) {
-		//timer.setDelay(maxDelay - pred.getValue());
+		timer.setDelay(maxDelay - pred.getValue());
 	}
 }
