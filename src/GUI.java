@@ -69,9 +69,23 @@ public class GUI extends JPanel implements ActionListener, ChangeListener {
 	 * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
 	 */
 	public void actionPerformed(ActionEvent e) {
+		int iterPrint;
+		String pora;
 		if (e.getSource().equals(timer)) {
 			iterNum++;
-			frame.setTitle(" (" + Integer.toString(iterNum) + " iteration)");
+			iterPrint = (int) Math.floor(iterNum/10);
+			if (iterPrint % 365 < 31+28) {
+				pora = "zima";
+			} else if (iterPrint % 365 < 59+92) {
+				pora = "wiosna";
+			} else if (iterPrint % 365 < 151+92) {
+				pora = "lato";
+			} else if (iterPrint % 365 < 243+91) {
+				pora = "jesień";
+			} else {
+				pora = "zima";
+			}
+			frame.setTitle(pora + ": (" + Integer.toString(iterPrint+1) + " iteration)");
 			board.iteration();
 		} else {
 			String command = e.getActionCommand();
