@@ -17,6 +17,7 @@ public class Point {
 	private int counterInfected;
 	private int counterProtected;
 	private int age;
+	private int iterNum = 0;
 
 	public Point() {
 		age = randomAge();
@@ -30,16 +31,12 @@ public class Point {
 		friendDistant = new ArrayList<Point>();
 		friendClose = new ArrayList<Point>();
 	}
-	public Point (int age){
-		this();
-		this.age = age;
-	}
 
 	int randomAge(){
 		int random = losuj(85);
 		if (random<10)
 			return 1;
-		else if (random<40)
+		else if (random<65)
 			return 2;
 		else return 3;
 	}
@@ -64,18 +61,24 @@ public class Point {
 	}
 
 	public void calculateNewState() {
+		iterNum ++;
+		//prawdopodobienstwo zarazenia sie od poszczegolnych rodzajow sasiadow
 		int tmp = 15000;
 		int tmp2 = 300;
 		int tmp3 = 1000;
+		double sezon;
 		int neighbors = countInfectedNeighbors();
 		int distantFriends = countInfectedDistantFriends();
 		int closeFriends = countInfectedCloseFriends();
-
-		int prob = tmp * neighbors + tmp2 * distantFriends + tmp3*closeFriends * (1+ 100*(age % 2));
+		if (iterNum % 3650 < 590 || iterNum % 3650 > 3040)
+			sezon = 1.2;
+		else
+			sezon = 0.8;
+		int prob = (tmp * neighbors + tmp2 * distantFriends + tmp3*closeFriends) * (1+ 4*(age % 2));
 		Random random = new Random();
 		int num = random.nextInt(3000000);
-		//TODO: insert logic which updates according to currentState and
-		if ((num < prob)&&(currentState==0) )
+
+		if ((num < prob*sezon)&&(currentState==0) )
 			nextState = 1;
 		else
 			nextState = currentState;
