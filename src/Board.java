@@ -62,10 +62,10 @@ public class Board extends JComponent implements MouseInputListener, ComponentLi
 
 		for (int x = 0; x < points.length; ++x) {
 			for (int y = 0; y < points[x].length; ++y) {
-				for(int i=-1; i<=1; i++){
-					for (int j=-1; j<=1; j++){
-						if((x+i>0 && x+i<points.length-1) && (y+j>0 && y+j<points[x].length-1) && !(i==0 && j==0) && (i==0 || j==0))
-							points[x][y].addNeighbor(points[x+i][y+j]);
+				for (int i = -1; i <= 1; i++) {
+					for (int j = -1; j <= 1; j++) {
+						if ((x + i > 0 && x + i < points.length - 1) && (y + j > 0 && y + j < points[x].length - 1) && !(i == 0 && j == 0) && (i == 0 || j == 0))
+							points[x][y].addNeighbor(points[x + i][y + j]);
 					}
 				}
 			}
@@ -74,7 +74,7 @@ public class Board extends JComponent implements MouseInputListener, ComponentLi
 		points[50][30].setState(2);
 		for (int x = 0; x < points.length; ++x)
 			for (int y = 0; y < points[x].length; ++y) {
-				while(points[x][y].getCountDistant() < 1) {
+				while (points[x][y].getCountDistant() < 1) {
 					do {
 						Random random = new Random();
 						num1 = random.nextInt(points.length);
@@ -86,20 +86,20 @@ public class Board extends JComponent implements MouseInputListener, ComponentLi
 					points[x][y].addDistantFriend(points[num1][num2]);
 				}
 				//liczniczek ++;
-					//System.out.println(liczniczek);
-				}
+				//System.out.println(liczniczek);
+			}
 
 
 		for (int x = 0; x < points.length; ++x)
 			for (int y = 0; y < points[x].length; ++y) {
-				while(points[x][y].getCountClose() < 2) {
+				while (points[x][y].getCountClose() < 2) {
 					do {
 						do {
 							Random random = new Random();
 							num1 = x + random.nextInt(8) - 4;
 							Random random2 = new Random();
 							num2 = y + random2.nextInt(8) - 4;
-						}while(num1 < 0 || num1 > points.length - 1 || num2 < 0 || num2 > points[x].length - 1);
+						} while (num1 < 0 || num1 > points.length - 1 || num2 < 0 || num2 > points[x].length - 1);
 						tmp = points[num1][num2].addCloseFriend(points[x][y]);
 						System.out.println(x + " " + y);
 					} while (tmp == false);
@@ -108,7 +108,7 @@ public class Board extends JComponent implements MouseInputListener, ComponentLi
 				//liczniczek ++;
 				//System.out.println(liczniczek);
 			}
-			}
+	}
 
 	//paint background and separators between cells
 	protected void paintComponent(Graphics g) {
@@ -142,24 +142,34 @@ public class Board extends JComponent implements MouseInputListener, ComponentLi
 
 		for (x = 0; x < points.length; ++x) {
 			for (y = 0; y < points[x].length; ++y) {
-				if (points[x][y].getState() != 0) {
-					switch (points[x][y].getState()) {
-					case 3:					//zdrowy
-						g.setColor(new Color(0xffffff));
+				//if (points[x][y].getState() != 0) {
+				switch (points[x][y].getState()) {
+					case 0:
+						g.setColor(new Color(0x3c9a50));
+						if (points[x][y].getAge() < 2) g.setColor(new Color(0x6ff299));
+						else if (points[x][y].getAge() > 2) g.setColor(new Color(0x2f6936));
 						break;
-					case 1:					//zarażony
-						g.setColor(new Color(0xff0000));
+					case 1:
+						g.setColor(new Color(0xff1e1e));
+						if (points[x][y].getAge() < 2) g.setColor(new Color(0xff8181));
+						else if (points[x][y].getAge() > 2) g.setColor(new Color(0x78191F));
 						break;
-					case 2:					//odporny
-						g.setColor(new Color(0x00ff));
+					case 2:
+						g.setColor(new Color(0xff));
+						if (points[x][y].getAge() < 2) g.setColor(new Color(0x00ffff));
+						else if (points[x][y].getAge() > 2) g.setColor(new Color(0x0f0f44));
 						break;
-					}
-					g.fillRect((x * size) + 1, (y * size) + 1, (size - 1), (size - 1));
+					case 3:
+						g.setColor(new Color(0x3c9a50));
+						if (points[x][y].getAge() < 2) g.setColor(new Color(0x6ff299));
+						else if (points[x][y].getAge() > 2) g.setColor(new Color(0x2f6936));
+						break;
 				}
+				g.fillRect((x * size) + 1, (y * size) + 1, (size - 1), (size - 1));
 			}
 		}
-
 	}
+
 
 	public void mouseClicked(MouseEvent e) {
 		int x = e.getX() / size;

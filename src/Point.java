@@ -16,8 +16,10 @@ public class Point {
 	private int numStates = 3;
 	private int counterInfected;
 	private int counterProtected;
-	
+	private int age;
+
 	public Point() {
+		age = randomAge();
 		countCloseFriends = 0;
 		counterProtected = 0;
 		counterInfected = 0;
@@ -28,10 +30,31 @@ public class Point {
 		friendDistant = new ArrayList<Point>();
 		friendClose = new ArrayList<Point>();
 	}
-	public void clicked() {
-		currentState=(++currentState)%numStates;	
+	public Point (int age){
+		this();
+		this.age = age;
 	}
-	
+
+	int randomAge(){
+		int random = losuj(85);
+		if (random<10)
+			return 1;
+		else if (random<40)
+			return 2;
+		else return 3;
+	}
+
+	public int getAge(){return age;}
+
+	public void clicked() {
+		currentState=(++currentState)%numStates;
+	}
+
+	public int losuj(int limit){
+		Random random = new Random();
+		return random.nextInt(limit);
+	}
+
 	public int getState() {
 		return currentState;
 	}
@@ -47,7 +70,8 @@ public class Point {
 		int neighbors = countInfectedNeighbors();
 		int distantFriends = countInfectedDistantFriends();
 		int closeFriends = countInfectedCloseFriends();
-		int prob = tmp * neighbors + tmp2 * distantFriends + tmp3*closeFriends;
+
+		int prob = tmp * neighbors + tmp2 * distantFriends + tmp3*closeFriends * (1+ 100*(age % 2));
 		Random random = new Random();
 		int num = random.nextInt(3000000);
 		//TODO: insert logic which updates according to currentState and
@@ -81,7 +105,7 @@ public class Point {
 	public void changeState() {
 		currentState = nextState;
 	}
-	
+
 	public void addNeighbor(Point nei) {
 		neighbors.add(nei);
 	}
