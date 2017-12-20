@@ -70,10 +70,13 @@ public class GUI extends JPanel implements ActionListener, ChangeListener {
 	 */
 	public void actionPerformed(ActionEvent e) {
 		int iterPrint;
+		int dzienRoku;
+		int rok;
 		String pora;
 		if (e.getSource().equals(timer)) {
 			iterNum++;
 			iterPrint = (int) Math.floor(iterNum/10);
+			iterPrint++;
 			if (iterPrint % 365 < 31+28) {
 				pora = "zima";
 			} else if (iterPrint % 365 < 59+92) {
@@ -85,7 +88,10 @@ public class GUI extends JPanel implements ActionListener, ChangeListener {
 			} else {
 				pora = "zima";
 			}
-			frame.setTitle(pora + ": (" + Integer.toString(iterPrint+1) + " iteration)");
+			dzienRoku = iterPrint%365;
+			if (dzienRoku==0) dzienRoku=365;
+			rok = (int) Math.ceil(iterPrint / 365);
+			frame.setTitle(pora + ": (" + Integer.toString(dzienRoku) + " dzien roku, " + Integer.toString(rok+1) + " rok)");
 			board.iteration();
 		} else {
 			String command = e.getActionCommand();
