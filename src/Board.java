@@ -9,6 +9,10 @@ import java.util.Random;
 import javax.swing.JComponent;
 import javax.swing.event.MouseInputListener;
 
+import org.knowm.xchart.QuickChart;
+import org.knowm.xchart.SwingWrapper;
+import org.knowm.xchart.XYChart;
+
 /**
  * Board with Points that may be expanded (with automatic change of cell
  * number) with mouse event listener
@@ -18,6 +22,9 @@ public class Board extends JComponent implements MouseInputListener, ComponentLi
 	//private static final long serialVersionUID = 1L;
 	private Point[][] points;
 	private int size = 5;
+	private double i = 0;
+	//private double inf = 0;
+	//private double[][] initdata;
 
 	public Board(int length, int height) {
 		addMouseListener(this);
@@ -37,6 +44,45 @@ public class Board extends JComponent implements MouseInputListener, ComponentLi
 			for (int y = 0; y < points[x].length; ++y)
 				points[x][y].changeState();
 		this.repaint();
+		if(i % 10 == 0) {
+		//	initdata[0][0] = i;
+		//	initdata[0][1] = CountAllInfected();
+			System.out.println("HEALTHY : " + CountAllHealthy() + "  INFECTED : " +CountAllInfected() + "  PROTECTED : " + CountAllProtected());
+		//	final XYChart chart = QuickChart.getChart("Simple XChart Real-time Demo", "Radians", "Sine", "sine", initdata[0], initdata[1]);
+
+		//	final SwingWrapper<XYChart> sw = new SwingWrapper<XYChart>(chart);
+		//	sw.displayChart();
+		}
+
+
+		i = i + 1;
+	}
+
+	public int CountAllInfected() {
+	int counterInfected = 0;
+		for (int x = 0; x < points.length; x++)
+			for (int y = 0; y < points[x].length; y++)
+				if (points[x][y].getState() == 1)
+					counterInfected = counterInfected + 1;
+		return counterInfected;
+	}
+
+	public int CountAllProtected() {
+		int counterProtected = 0;
+		for (int x = 0; x < points.length; x++)
+			for (int y = 0; y < points[x].length; y++)
+				if (points[x][y].getState() == 2)
+					counterProtected = counterProtected + 1;
+		return counterProtected;
+	}
+
+	public int CountAllHealthy() {
+		int counterHealthy = 0;
+		for (int x = 0; x < points.length; x++)
+			for (int y = 0; y < points[x].length; y++)
+				if (points[x][y].getState() == 0)
+					counterHealthy = counterHealthy + 1;
+		return counterHealthy;
 	}
 
 	// clearing board
@@ -101,7 +147,6 @@ public class Board extends JComponent implements MouseInputListener, ComponentLi
 							num2 = y + random2.nextInt(8) - 4;
 						} while (num1 < 0 || num1 > points.length - 1 || num2 < 0 || num2 > points[x].length - 1);
 						tmp = points[num1][num2].addCloseFriend(points[x][y]);
-						System.out.println(x + " " + y);
 					} while (tmp == false);
 					points[x][y].addCloseFriend(points[num1][num2]);
 				}
@@ -156,7 +201,7 @@ public class Board extends JComponent implements MouseInputListener, ComponentLi
 						break;
 					case 2:
 						//g.setColor(new Color(0xff));
-						g.setColor(new Color(0x3c9a50));
+						g.setColor(new Color(0x2B4D9A));
 						//if (points[x][y].getAge() < 2) g.setColor(new Color(0x00ffff));
 						//else if (points[x][y].getAge() > 2) g.setColor(new Color(0x0f0f44));
 						break;
