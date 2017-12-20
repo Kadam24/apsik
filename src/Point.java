@@ -70,15 +70,25 @@ public class Point {
 		int neighbors = countInfectedNeighbors();
 		int distantFriends = countInfectedDistantFriends();
 		int closeFriends = countInfectedCloseFriends();
-		if (iterNum % 3650 < 590 || iterNum % 3650 > 3040)
-			sezon = 1.2;
+
+		if (iterNum % 3650 < 380) // styczen
+			sezon = 1.5;
+		else if (iterNum % 3650 < 940) // koniec zimy, poczatek wiosny
+			sezon = 1.1;
+		else if (iterNum % 3650 < 2500) // reszta wiosny, lato
+			sezon = 0.6;
+		else if (iterNum % 3650 < 3400) // jesien
+			sezon = 1.1;
 		else
-			sezon = 0.8;
-		int prob = (tmp * neighbors + tmp2 * distantFriends + tmp3*closeFriends) * (1+ 4*(age % 2));
+			sezon = 1.5;
+
+		double ageInfluence=1;
+		if (age%2==1) ageInfluence = 1.3;
+		int prob = (tmp * neighbors + tmp2 * distantFriends + tmp3*closeFriends);
 		Random random = new Random();
 		int num = random.nextInt(3000000);
 
-		if ((num < prob*sezon)&&(currentState==0) )
+		if ((num < prob*sezon*ageInfluence)&&(currentState==0) )
 			nextState = 1;
 		else
 			nextState = currentState;
@@ -86,7 +96,7 @@ public class Point {
 		if(currentState==1)
 			counterInfected++;
 
-		if(counterInfected > 140) {
+		if(counterInfected > 150) {
 			nextState = 2;
 			counterInfected = 0;
 		}
@@ -94,7 +104,7 @@ public class Point {
 		if(currentState == 2)
 			counterProtected++;
 
-		if(counterProtected > 1000) {
+		if(counterProtected > 280) {
 			nextState = 0;
 			counterProtected = 0;
 		}

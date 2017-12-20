@@ -146,24 +146,21 @@ public class Board extends JComponent implements MouseInputListener, ComponentLi
 				switch (points[x][y].getState()) {
 					case 0:
 						g.setColor(new Color(0x3c9a50));
-						if (points[x][y].getAge() < 2) g.setColor(new Color(0x6ff299));
-						else if (points[x][y].getAge() > 2) g.setColor(new Color(0x2f6936));
+						//if (points[x][y].getAge() < 2) g.setColor(new Color(0x6ff299));
+						//else if (points[x][y].getAge() > 2) g.setColor(new Color(0x2f6936));
 						break;
 					case 1:
 						g.setColor(new Color(0xff1e1e));
-						if (points[x][y].getAge() < 2) g.setColor(new Color(0xff8181));
-						else if (points[x][y].getAge() > 2) g.setColor(new Color(0x78191F));
+						//if (points[x][y].getAge() < 2) g.setColor(new Color(0xff8181));
+						//else if (points[x][y].getAge() > 2) g.setColor(new Color(0x78191F));
 						break;
 					case 2:
-						g.setColor(new Color(0xff));
-						if (points[x][y].getAge() < 2) g.setColor(new Color(0x00ffff));
-						else if (points[x][y].getAge() > 2) g.setColor(new Color(0x0f0f44));
-						break;
-					case 3:
+						//g.setColor(new Color(0xff));
 						g.setColor(new Color(0x3c9a50));
-						if (points[x][y].getAge() < 2) g.setColor(new Color(0x6ff299));
-						else if (points[x][y].getAge() > 2) g.setColor(new Color(0x2f6936));
+						//if (points[x][y].getAge() < 2) g.setColor(new Color(0x00ffff));
+						//else if (points[x][y].getAge() > 2) g.setColor(new Color(0x0f0f44));
 						break;
+
 				}
 				g.fillRect((x * size) + 1, (y * size) + 1, (size - 1), (size - 1));
 			}
